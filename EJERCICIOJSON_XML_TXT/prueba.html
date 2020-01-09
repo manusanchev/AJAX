@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script>
+       function cargarTXT(){
+            if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+            }
+
+            peticion.onreadystatechange = function(){
+                var respuesta = peticion.responseText;
+                document.getElementById("mostrarTXT").innerText = respuesta;
+            }
+
+            peticion.open('GET',"hola_mundo.txt",true);
+            peticion.send();
+        }
+
+        function cargarXML(){
+            if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+            }
+         
+            peticion.onreadystatechange = function(){
+                
+                if(this.readyState === 4 && this.status === 200){
+                    var respuesta = this.responseXML;
+                    var cd = respuesta.getElementsByTagName("CD");
+                    console.log(cd);
+                    var titulo="";
+                    var artista = "";
+                    var pais = "";
+                    var txt = "";
+
+                    var i;
+                    for (const datos of cd) {
+                        var titulo = datos.getElementsByTagName("TITULO")[0].firstChild.nodeValue;
+                        var artista =datos.getElementsByTagName("ARTISTA")[0].firstChild.nodeValue;
+                        var pais = datos.getElementsByTagName("PAIS")[0].firstChild.nodeValue;
+                        txt += titulo+"---"+artista+"----"+pais+"<br>";
+                        
+                    }
+                    document.getElementById("mostrarXML").innerHTML = txt;
+                }
+              
+               
+            }
+
+            peticion.open('GET',"datos_xml.xml",true);
+            peticion.send();
+        }
+        function cargarJSON(){
+            if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+            }
+
+            peticion.onreadystatechange = function(){
+                if(this.readyState === 4 && this.status === 200){
+                    var respuesta = eval("("+this.responseText+")");
+                    console.log(respuesta["parametros"]["telefono"]);
+                    document.getElementById("mostrarJSON").innerHTML = respuesta["mensaje"]+"<br>"+respuesta["parametros"]["telefono"]+"<br>"+respuesta["parametros"]["codigopostal"]+"<br>"+respuesta["parametros"]["fechanacimiento"];
+
+                }
+            }
+
+            peticion.open('GET',"datos_json.json",true);
+            peticion.send();
+
+        }
+    </script>
+
+</head>
+<body>
+    <button onclick="cargarTXT()">Mostrar TXT</button>
+    <div id="mostrarTXT"></div>
+
+    <button onclick="cargarXML()">Mostrar XML</button>
+    <div id="mostrarXML"></div>
+
+    <button onclick="cargarJSON()">Mostrar JSON</button>
+    <div id="mostrarJSON"></div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        
+
+            function descargaArchivo(){
+                if(window.XMLHttpRequest){
+                    peticion = new XMLHttpRequest();
+                }
+
+                peticion.onreadystatechange = muestraContenido;
+
+                peticion.open('GET','datos_xml.xml',true);
+                peticion.send(null);
+
+
+                
+            }
+        
+            function muestraContenido(){
+                var titulo="";
+                var artista = "";
+                var pais = "";
+                var txt = "";
+
+                if(peticion.readyState === 4 && peticion.status===200){
+                    var documentoXML = peticion.responseXML;
+                    var cd = documentoXML.getElementsByTagName("CD");
+
+
+                    for (let i = 0; i < cd.length; i++) {
+                        titulo = documentoXML.getElementsByTagName("TITULO")[i].firstChild.nodeValue;
+                        artista = documentoXML.getElementsByTagName("ARTISTA")[i].firstChild.nodeValue;
+                        pais = documentoXML.getElementsByTagName("PAIS")[i].firstChild.nodeValue;
+                        txt+=titulo+"----"+artista+"-----"+pais+"<br>";
+                    }
+                    document.getElementById("datos").innerHTML = txt;
+                    
+                }
+            }
+    </script>
+    
+</head>
+<body>
+   <div id="datos"></div>
+   <button onclick="descargaArchivo()">Mostrar contenido</button>
+</body>
+</html>

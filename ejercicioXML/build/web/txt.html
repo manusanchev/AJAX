@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        
+
+            function descargaArchivo(){
+                if(window.XMLHttpRequest){
+                    peticion = new XMLHttpRequest();
+                }
+
+                peticion.onreadystatechange = muestraContenido;
+
+                peticion.open('GET','hola_mundo.txt',true);
+                peticion.send(null);
+
+
+                
+            }
+        
+            function muestraContenido(){
+               
+
+                if(peticion.readyState === 4 && peticion.status===200){
+                  
+
+                    document.getElementById("datos").innerHTML = peticion.responseText;
+                    
+                }
+            }
+    </script>
+    
+</head>
+<body>
+   <div id="datos"></div>
+   <button onclick="descargaArchivo()">Mostrar contenido</button>
+</body>
+</html>
