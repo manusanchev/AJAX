@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function cargar(){
+            nombre = document.getElementById("nombre");
+            usuario = document.getElementById("usuario");
+            disponibleDiv = document.getElementById("disponible");
+            alternativasDiv = document.getElementById("alternativas");
+            if(window.XMLHttpRequest){
+                peticion = new XMLHttpRequest();
+            }
+
+            peticion.onreadystatechange = mostrar;
+
+            peticion.open('POST',"compruebaDisponibilidadXML.jsp",true);
+         
+            var q = query_string();
+            peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            peticion.send(q);
+        }
+
+        function mostrar(){
+            
+            if(peticion.status === 200 && peticion.readyState === 4){
+                var xml = peticion.responseXML;
+                var respuesta = xml.getElementsByTagName("respuesta");
+                console.log(respuesta);
+                var disponible = respuesta[0].firstChild.childNodes[0].nodeValue;
+          
+               if(disponible == "si"){
+            
+                    disponibleDiv.innerText = "El nombre "+ usuario.value+ " está disponible";
+                    alternativasDiv.innerText ="";
+                }else{
+                    disponibleDiv.innerText =  "El nombre "+ usuario.value+ " no está disponible";
+                    var alternativas = respuesta[0].lastChild.getElementsByTagName("login");
+                    for (const datos of alternativas) {
+                      
+                        alternativasDiv.innerHTML += "<li><a href='#' onclick='poner(this);cargar();'>"+datos.innerHTML+"</a></li>";
+                    }
+                   
+                    
+                }
+                
+            }
+        }
+        function query_string(){
+           
+
+            return "usuario=" + encodeURIComponent(usuario.value) + "&nocache=" + Math.random();
+
+        }
+
+        function poner(dato){
+            var d = dato.innerText;
+            usuario.value = d;
+        }
+    
+    </script>
+</head>
+<body>
+    <h1>Comprobar disponibilidad del login y mostrar alternativas</h1>
+    <form>
+        <label>Nombre de usuario</label><input type="text" name="usuario" id="usuario" onkeyup="cargar()"><!--<a href="#" onclick="cargar()">Comprobar disponibilidad</a>-->
+    </form>
+    <div>
+        <p><span id="nombre"></span><span id="disponible"></span></p>
+        <ul id="alternativas">
+
+        </ul>
+    </div>
+</body>
+</html>
