@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<Libreria>
+	<Infantil>
+		<Titulo>Infantil: El rey León</Titulo>
+		<Titulo>Infantil: Aladín</Titulo>
+                <Titulo>Infantil: Bee movie</Titulo>
+                <Titulo>Infantil: Arthur y los Minimoys </Titulo>
+                <Titulo>Infantil: Arthur Christmas </Titulo>
+                <Titulo>Infantil: Alvin y las ardillas 3</Titulo>
+                <Titulo>Infantil: Buscando a Nemo </Titulo>
+                <Titulo>Infantil: Cars</Titulo>
+                <Titulo>Infantil: Arrietty y el mundo de los diminutos</Titulo>
+                
+	</Infantil>
+	<Adultos>
+		<Titulo>Adultos: Eraser</Titulo>
+		<Titulo>Adultos: Instinto Básico</Titulo>
+                <Titulo>Adultos: Abuelos al Poder </Titulo>
+                <Titulo>Adultos: Ai Weiwei: Never sorry  </Titulo>
+                <Titulo>Adultos: Amor y Letras  </Titulo>
+                <Titulo>Adultos: Anna Karenina  </Titulo>
+                <Titulo>Adultos: Blue Valentine </Titulo>
+                <Titulo>Adultos: Dando la Nota  </Titulo>
+                <Titulo>Adultos: Días de pesca en Patagonia  </Titulo>
+                <Titulo>Adultos: Dos días en Nueva York  </Titulo>
+                <Titulo>Adultos: El Chico del Periódico  </Titulo>
+	</Adultos>
+</Libreria>
