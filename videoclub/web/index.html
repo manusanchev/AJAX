@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="ISO-8859-1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            window.onload = cargarCategorias
+         
+            function cargarCategorias(){
+               
+                  peticion =  new XMLHttpRequest();
+                
+                category = document.getElementById("categoria");
+
+                peticion.onreadystatechange = function(){
+                  
+                    if(this.status === 200 && this.readyState === 4){
+                        var categorias = JSON.parse(peticion.responseText);
+                        
+                    
+                        for (const dato of categorias) {
+                      
+                            category.innerHTML += "<option value='"+dato.codigoCategoria+"' onchange='cargarVideoclubs(this)'>"+dato.nombreCategoria+"</option>";
+                        }
+                        
+                    }
+                }
+
+                peticion.open("GET","cargaCategorias.jsp",true);
+                peticion.send(null);
+
+            }
+            function cargarVideoclubs(id){
+               
+                peticion = "";
+                peticion =  new XMLHttpRequest();
+              
+               videoclub = document.getElementById("videoclub");
+                peticion.onreadystatechange = function(){
+                   
+                  if(this.status === 200 && this.readyState === 4){
+                      var videoclubRespuesta = JSON.parse(peticion.responseText);
+                      videoclub.innerHTML ="";
+                   
+                     for (const dato of videoclubRespuesta) {
+                    
+                        videoclub.innerHTML += "<option value='"+dato.codigoVideoclub+"'>"+dato.nombreVideoclub+"</option>";
+                      }
+                      
+                      
+                  }
+                 }
+                var mandar = "id="+encodeURIComponent(id)+"&ncache="+Math.random(); 
+               
+                peticion.open("POST","cargaVideoclubs.jsp",true);
+                peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                peticion.send(mandar);
+              
+               
+        }
+        </script>
+    </head>
+    <body>
+       <h1>Encuentra tus pelis favoritas en el videoclub mas cercano</h1>
+       <form>
+           <label>Categoria</label>
+           <select onchange=cargarVideoclubs(this.value) name="categoria" id="categoria">
+
+           </select>
+           <label>Videoclub</label>
+           <select name="videoclub" id="videoclub">
+                <option>Seleccione una categoria</option>
+            </select>
+       </form>
+    </body>
+</html>

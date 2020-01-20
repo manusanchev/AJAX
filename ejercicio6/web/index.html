@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function iniciar() {
+            if (window.XMLHttpRequest) {
+                peticion = new XMLHttpRequest();
+            }
+            tematica = document.getElementById("tematica");
+
+            peticion.onreadystatechange = function () {
+                if (this.status === 200 && this.readyState === 4) {
+                    var respuesta = this.responseXML;
+                    var salida = document.getElementById("disponible");
+                     if(respuesta.getElementsByTagName("encontrado")[0].firstChild.nodeValue == "no"){
+                        salida.innerHTML = "<p>No existe ningun libro sobre: "+tematica.value+"</p>";
+                     }else{
+                         salida.innerHTML = "<p>Libros disponibles sobre: "+tematica.value+"</p>";
+                         var table = document.getElementById("table");
+                        table.innerHTML ="";
+                        
+                         var titulos = respuesta.getElementsByTagName("titulo");
+                         var autores = respuesta.getElementsByTagName("autor");
+                         table.innerHTML = "<tr><th>Titulo</th><th>Autor</th></tr>";
+                         table.innerHTML += "<tr>";
+                        for (let i = 0; i < titulos.length; i++) {
+                         
+                            table.innerHTML += "<td>"+titulos[i].firstChild.nodeValue+"</td>"+
+                            "<td>"+autores[i].firstChild.nodeValue+"</td>";
+                          
+                        }
+                        table.innerHTML += "</tr>";
+                     }
+                }
+                
+            }
+          
+            peticion.open("POST","respuestalibrosXML.jsp",true);
+            peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var query = query_string();
+            peticion.send(query);
+            
+        }
+
+        function query_string(){
+
+            return "tematica="+encodeURIComponent(tematica.value)+
+                    "&ncache="+Math.random();
+        }
+    </script>
+</head>
+<style>
+    #table th{
+        background-color: rgb(177, 164, 164);
+    }
+    #table,tr,td,th{
+        border: 1px solid black;
+        
+    }
+
+</style>
+<body>
+    <h1>Comprobar si hay libros disponibles sobre</h1>
+    <form>
+        <label>Tematica del libro:</label>
+        <input type="text" name="tematica" id="tematica"  onkeyup="iniciar()">
+      
+    </form>
+    <div id="disponible"></div>
+    <table id="table"></table>
+</body>
+
+</html>
