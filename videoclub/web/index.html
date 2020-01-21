@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <title>TODO supply a title</title>
@@ -63,20 +59,115 @@ and open the template in the editor.
                 peticion.send(mandar);
               
                
-        }
+            }
+            function cargarPeliculas(){
+                peticion = "";
+                peticion =  new XMLHttpRequest();
+              
+                peliculasDiv = document.getElementById("peliculas");
+                peticion.onreadystatechange = function(){
+                   console.log(this.status);
+                  if(this.status === 200 && this.readyState === 4){
+                      var peliculasRespuesta = JSON.parse(peticion.responseText);
+                      
+                      peliculasDiv.innerHTML ="<h1>Peliculas disponible</h1><br>";
+                   
+                     for (const dato of peliculasRespuesta) {
+                    
+                        peliculasDiv.innerHTML += dato.nombrePelicula+"<br><hr>";
+                      }
+                      
+                      
+                  }
+                 }
+                 
+                var mandar = crear_string();
+               
+                peticion.open("POST","cargaPeliculas.jsp",true);
+                peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                peticion.send(mandar);
+              
+            }
+            function crear_string(){
+                var categoria = document.getElementById("categoria");
+                var videoclub = document.getElementById("videoclub");
+                console.log(categoria.value);
+                console.log(videoclub.value);
+                return  "categoria="+encodeURIComponent(categoria.value)+"&videoclub="+encodeURIComponent(videoclub.value)+"&ncache="+Math.random(); 
+            }
         </script>
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+              
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .container{
+                width: 50%;
+                height: 90vh;
+                margin: auto;
+               overflow-y: scroll;
+           
+                background-color: #34495e;
+               
+            }
+            h2{
+                color:white;
+                text-align: center;
+            }
+            form{
+                width: 80%;
+                height: 40%;
+                margin: auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                
+                
+            }
+            label{
+                color:white;
+                padding-bottom:10px;
+            }
+          
+            select,input{
+                width: 50%;
+
+            }
+            #peliculas{
+                color:white;
+                text-align: center;
+                
+            }
+            img{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
+        </style>
     </head>
     <body>
-       <h1>Encuentra tus pelis favoritas en el videoclub mas cercano</h1>
+     
+       <div class="container">
+        <h2>Encuentra tus pelis favoritas en el videoclub mas cercano</h2>
+        <img src="videoteca.gif" alt="">
        <form>
            <label>Categoria</label>
            <select onchange=cargarVideoclubs(this.value) name="categoria" id="categoria">
-
+            <option>Seleccione una categoria</option>
            </select>
            <label>Videoclub</label>
            <select name="videoclub" id="videoclub">
                 <option>Seleccione una categoria</option>
             </select>
+            <input type="button" value="Buscar peliculas" onclick="cargarPeliculas()">
        </form>
+       <div id="peliculas">
+
+       </div>
+    </div>
     </body>
 </html>

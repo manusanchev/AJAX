@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Categoria;
+import modelo.Pelicula;
 import modelo.Videoclub;
 
 /**
@@ -53,10 +54,25 @@ public class BD {
         while(rs.next()){
             int id_store = rs.getInt(1);
             String nombre =rs.getString(2);
-            Videoclub videoclub = new Videoclub(id, nombre);
+            Videoclub videoclub = new Videoclub(id_store, nombre);
             videoclubs.add(videoclub);
         }
         
         return videoclubs;
+    }
+    public List<Pelicula> getPeliculas(int categoria_id, int videoclub_id) throws SQLException{
+         List<Pelicula> peliculas = new ArrayList<Pelicula>();
+         String sql = "SELECT film.film_id, film.title from film where film.film_id in ( SELECT film_category.film_id FROM film_category where film_category.category_id ="+categoria_id+" and film_category.film_id in ( SELECT inventory.film_id FROM inventory where inventory.store_id = ( SELECT store.store_id from store where store.store_id ="+videoclub_id+" ))) ";
+         Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+         rs = st.executeQuery(sql);
+         while(rs.next()){
+            int id_film = rs.getInt(1);
+            String nombre =rs.getString(2);
+            Pelicula pelicula = new Pelicula(id_film, nombre);
+            peliculas.add(pelicula);
+        }
+        
+        return peliculas;
+       
     }
 }
