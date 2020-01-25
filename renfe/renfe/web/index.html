@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="funcionesJSON.js"></script>
+</head>
+    <body>
+        <form action="reserva.jsp" method="get">
+            <div class="destino">
+                <label>Ciudad</label>
+                <select name="ciudad" id="ciudad" onchange="cargarPoblacion()">
+                    <option value="Elige una ciudad">Elige una ciudad</option>
+                </select>
+                <label>Poblacion</label>
+                <select name="poblacion" id="poblacion">
+                    <option value="Elige una ciudad">Elige una ciudad</option>
+                </select>
+            </div>
+            <div class="elegir">
+                <div class="salidas">
+                    <label>Salida</label>
+                    <input type="date" name="fechaSalida" id="fechaSalida">
+                    <label>Mañana</label>
+                    <input type="radio" name="horarioSalida" id="horarioSalida" value="manana" checked>
+                    <label>Tarde</label>
+                    <input type="radio"name="horarioSalida" id="horarioSalida" value="tarde">
+                    <label>Noche</label>
+                    <input type="radio"name="horarioSalida" id="horarioSalida" value="noche">
+                  
+                </div>
+                <div class="regresos">
+                    <label>Regreso</label>
+                    <input type="date" name="fechaRegreso" id="fechaRegreso">
+                    <label>Mañana</label>
+                    <input type="radio" name="horarioRegreso" id="horarioRegreso" value="manana" checked>
+                    <label>Tarde</label>
+                    <input type="radio"name="horarioRegreso" id="horarioRegreso" value="tarde">
+                    <label>Noche</label>
+                    <input type="radio"name="horarioRegreso" id="horarioRegreso" value="noche">
+                </div>
+            </div>
+            <div class="personas">
+                <label>adultos</label>
+                <input type="number"  min="1" max="10" name="adultos" id="adultos" value="1">
+                <label>Niños 4-13</label>
+                <input type="number" min="0" max="10" name="ninos" id="ninos" >
+                <label>Niños < 4 </label>
+                <input type="number" min="0" max="10" name="bebes" id="bebes" >
+            </div>
+            <input type="submit" value="Enviar" onclick="validar(event)">
+            <div id="errores"></div>
+        </form>
+      
+    </body>
+</html>
