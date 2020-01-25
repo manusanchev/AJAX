@@ -3,13 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/web/cargaCiudades.jsp</file>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/web/funciones.js</file>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/src/java/controlador/BD.java</file>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/src/java/modelo/Poblacion.java</file>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/src/java/modelo/Ciudad.java</file>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/web/index.html</file>
-            <file>file:/C:/xampp/htdocs/AJAX/renfe/web/cargaMunicipios.jsp</file>
+            <file>file:/C:/xampp/htdocs/AJAX/renfe/renfe/web/cargaCiudadesXML.jsp</file>
+            <file>file:/C:/xampp/htdocs/AJAX/renfe/renfe/web/reserva.jsp</file>
+            <file>file:/C:/xampp/htdocs/AJAX/renfe/renfe/web/cargaMunicipiosXML.jsp</file>
         </group>
     </open-files>
 </project-private>
