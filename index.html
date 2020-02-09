@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <script>
+        indice = -1;
+        function obtenerSugerencias(e) {
+            var arrTitulos = ["a","a","a","a","a"];
+        
+         
+            var peticion;
+            var sugerencia = document.getElementById("sugerencia");
+           
+            var lista = sugerencia.children;
+            var consulta = document.getElementById("consulta");
+            if (window.XMLHttpRequest) {
+                peticion = new XMLHttpRequest();
+            }
+          
+            if (e.keyCode != 40 && e.keyCode != 38 && e.keyCode !=13) {
+                peticion.onreadystatechange = function () {
+                    if (this.status == 200 && this.readyState == 4) {
+                        sugerencia.style.visibility = "";
+                        var respuesta = JSON.parse(this.responseText);
+                    }
+                }
+                var query = creaQuery();
+                peticion.open('GET', "obtenerSugerencias.jsp", true);
+                peticion.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                peticion.send(query)
+            }else{
+                switch(e.keyCode){
+                    case 40: if(indice<arrTitulos.length-1)indice++; break;
+                    case 38: if(indice>0)indice--; break;
+                    case 13:   e.preventDefault();
+                                consulta.value = lista[indice].innerHTML;
+                                sugerencia.style.visibility = "hidden";
+                            break;
+                }
+            }
+           
+            for (let i = 0; i < lista.length; i++) {
+                lista[i].style.backgroundColor = "aqua";
+                
+            }
+            lista[indice].style.backgroundColor = "red";
+        }
+
+        function creaQuery() {
+            var consulta = document.getElementById("consulta");
+            return "consulta=" + encodeURIComponent(consulta.value) + "&nCache=" + Math.random();
+        }
+        function poner(objeto){
+           document.getElementById("consulta").value = objeto.innerHTML;
+           document.getElementById("sugerencia").style.visibility ="hidden";
+        }
+    </script>
+ <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Buscador de libros</h1>
+    <form>
+        <div class="container" >
+            <label>Buscar libro</label>
+            <input type="text" id="consulta" onkeydown="obtenerSugerencias(event)">
+        </div>
+        <div class="sugerencias" id="sugerencia">
+            <p onclick="poner(this)">adsad</p>
+            <p onclick="poner(this)">asssssdsad</p>
+            <p>adsad</p>
+            <p>adsad</p>
+            <p>adsad</p>
+        </div>
+    </form>
+</body>
+
+</html>
