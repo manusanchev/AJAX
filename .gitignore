@@ -4,7 +4,13 @@
 /ejercicio6/build/
 /videoclub/nbproject/private/
 /videoclub/build/
+<<<<<<< HEAD
 /renfe/nbproject/private/
 /renfe/build/
 /renfe_repaso/nbproject/private/
 /renfe_repaso/build/
+=======
+/renfe/renfe/dist/
+>>>>>>> c29cf3100e080e4f84eed9be60797f9f533fb257
+/barraBusqueda/nbproject/private/
+/barraBusqueda/build/
