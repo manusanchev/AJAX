@@ -15,19 +15,18 @@ public class Libro {
     private String descripcion;
     private String editorial;
     private String autor;
-    private int precio;
-    
+
     public Libro(){
         
     }
 
-    public Libro(String titulo, String isbn, String descripcion, String editorial, String autor, int precio) {
+    public Libro(String titulo, String isbn, String descripcion, String editorial, String autor) {
         this.titulo = titulo;
         this.isbn = isbn;
         this.descripcion = descripcion;
         this.editorial = editorial;
         this.autor = autor;
-        this.precio = precio;
+      
     }
 
     public String getTitulo() {
@@ -70,12 +69,6 @@ public class Libro {
         this.autor = autor;
     }
 
-    public int getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(int precio) {
-        this.precio = precio;
-    }
+  
             
 }

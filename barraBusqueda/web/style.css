@@ -2,10 +2,10 @@
     padding: 0;
     margin: 0;
 }
-form{
+.form{
     width: 600px;
     margin: auto;
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
                        
@@ -27,22 +27,37 @@ input{
     padding: 10px;
 }
 .sugerencias{
-   /* visibility: hidden;*/
-   
+    
     margin-top: 5px;
     width: 424px;
     height: auto;
-    background-color: aqua;
+    background-color: rgb(177, 190, 190);
     align-self: flex-end;
+    list-style: none;
     
 }
-.sugerencias p{
+ul{
+    height: auto;
+}
+li{
     
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-bottom: 1px solid grey;
     padding: 10px;
     cursor: pointer;
+    list-style: none;
 }
-.sugerencias p:hover{
-    background-color: red;
+li:hover{
+    background-color: rgb(172, 167, 167);
+}
+#table{
+  
+    width: 50%;
+    margin:  100px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    flex-direction: column;
+    
 }

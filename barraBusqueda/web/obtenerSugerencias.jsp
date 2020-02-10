@@ -4,7 +4,7 @@
 
 <%
     BD conexion = new BD();
-    String campo = request.getParameter("dato");
+    String campo = request.getParameter("consulta");
     List<String> libros = conexion.getTituloLibros(campo);
     String json = "[";
     for(int i=0; i<libros.size()-1; i++){
@@ -12,4 +12,7 @@
     }
     json += "{\"titulo\":\""+libros.get(libros.size()-1)+"\"}]";
     out.print(json);
+ 
+
+ 
 %>

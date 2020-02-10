@@ -1,89 +1,143 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
 
 <head>
     <title>TODO supply a title</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script>
-        function obtenerSugerencias(event) {
+        indice = -1;
+        arrTitulos = [];
+
+        function obtenerSugerencias(e) {
+
+
             var peticion = new XMLHttpRequest();
-            var busqueda = document.getElementById("busqueda");
-            var sugerencias = document.getElementById("sugerencias");
-            arrTitulos = [];
-            sugerencias.innerHTML = "";
-            peticion.onreadystatechange = function () {
-                if (event.keyCode != 38 && event.keyCode != 40 && event.keyCode != 13) {
+            var sugerencia = document.getElementById("sugerencia");
 
+            var lista = sugerencia.children;
+            var consulta = document.getElementById("consulta");
+            if(consulta.value.length==0){
+                document.getElementById("sugerencia").style.display = "none";
+            document.getElementById("su").style.display = "none";
+            }
+            if (e.keyCode != 40 && e.keyCode != 38 && e.keyCode != 13 && consulta.value.length!=0) {
+                peticion.onreadystatechange = function () {
 
-                    if (this.readyState = 4 && this.status == 200 && busqueda.value != "") {
+                    if (this.status == 200 && this.readyState == 4) {
+                        arrTitulos = [];
+                        sugerencia.innerHTML = "";
+                        sugerencia.style.display = "block";
+                        document.getElementById("su").style.display = "block";
                         var respuesta = JSON.parse(this.responseText);
 
                         for (const datos of respuesta) {
-                            var p = document.createElement("p");
+                            sugerencia.innerHTML += "<li onclick='poner(this)'>" + datos.titulo + "</li>";
+
                             arrTitulos.push(datos.titulo);
-                            var text = document.createTextNode(datos.titulo);
-                            p.appendChild(text);
-                            sugerencias.appendChild(p);
+
                         }
+
                     }
                 }
+                var query = creaQuery();
+
+                peticion.open("POST", "obtenerSugerencias.jsp", true)
+                peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                peticion.send(query)
+            } else {
+
+                switch (e.keyCode) {
+                    case 40:
+                        if (indice < arrTitulos.length - 1) indice++;
+                        break;
+                    case 38:
+                        if (indice > 0) indice--;
+                        break;
+                    case 13:
+                        e.preventDefault();
+                        consulta.value = lista[indice].innerHTML;
+                        document.getElementById("su").style.display = "none";
+                        cargarInformacion(lista[indice].innerHTML);
+                        break;
+                }
+            }
+            if (lista.length > 0) {
+                for (let i = 0; i < lista.length; i++) {
+                    lista[i].style.backgroundColor = "rgb(177, 190, 190)";
+
+                }
+                lista[indice].style.backgroundColor = "rgb(172, 167, 167)";
             }
 
-            console.log(arrTitulos);
 
-            var string = "dato=" + encodeURIComponent(busqueda.value) + "&nCache=" + Math.random();
-            peticion.open("POST", "obtenerSugerencias.jsp", true)
+        }
+
+        function creaQuery() {
+            var consulta = document.getElementById("consulta");
+            return "consulta=" + encodeURIComponent(consulta.value) + "&nCache=" + Math.random();
+        }
+
+        function poner(objeto) {
+            document.getElementById("consulta").value = objeto.innerHTML;
+            document.getElementById("sugerencia").style.display = "none";
+            document.getElementById("su").style.display = "none";
+            cargarInformacion(objeto.innerHTML);
+        }
+
+        function cargarInformacion(libro) {
+            var peticion = new XMLHttpRequest();
+            var divTable = document.getElementById("table");
+            divTable.innerHTML ="";
+            peticion.onreadystatechange = function () {
+
+                if (this.status == 200 && this.readyState == 4) {
+                    var respuesta = this.responseXML;
+                   
+
+                    var libro = respuesta.getElementsByTagName("libro");
+                    for (const datos of libro) {
+                        var isbn = datos.getElementsByTagName("isbn")[0].firstChild.nodeValue;
+                        var autor = datos.getElementsByTagName("autor")[0].firstChild.nodeValue;
+                        var titulo = datos.getElementsByTagName("titulo")[0].firstChild.nodeValue;
+                        var descripcion = datos.getElementsByTagName("descripcion")[0].firstChild.nodeValue;
+                        var editorial = datos.getElementsByTagName("editorial")[0].firstChild.nodeValue;
+                        divTable.innerHTML += "<table border='1'><tr><th>titulo</th><td>" + titulo +
+                            "</td></tr><tr><th>isbn</th><td>" + isbn + "</td></tr><tr><th>autor</th><td>" + autor +
+                            "</td></tr><tr><th>descripcion</th><td>" + descripcion +
+                            "</td></tr><tr><th>editorial</th><td>" + editorial + "</td></tr></table><br>";
+
+
+                    }
+
+                }
+            }
+            var query = creaQuery();
+            peticion.open("POST", "obtenerDatos.jsp", true)
             peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            peticion.send(string);
+            peticion.send(query)
         }
-
-     
     </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        form {
-            width: 350px;
-        }
-
-        input {
-            width: 75%;
-        }
-
-        #sugerencias {
-            float: right;
-            width: 76%;
-            overflow-y: scroll;
-            height: 200px;
-            background-color: rgb(182, 174, 174);
-        }
-
-        p {
-            border-bottom: 1px solid rgb(136, 130, 130);
-            padding: 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>Buscador de libros</h1>
-    <form>
-        <label>Buscar libro</label>
-        <input type="text" id="busqueda" onkeyup="obtenerSugerencias(event)">
-        <div id="sugerencias">
-
+    <div class="form">
+        <div class="container">
+            <label>Buscar libro</label>
+            <input type="text" id="consulta" onkeyup="obtenerSugerencias(event)" autocomplete="off">
         </div>
-    </form>
+        <div class="sugerencias" id="su">
+            <ul id="sugerencia">
 
+            </ul>
+        </div>
+    </div>
+    <div id="table">
+
+    </div>
 </body>
 
 </html>

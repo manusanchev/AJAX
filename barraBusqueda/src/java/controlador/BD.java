@@ -30,7 +30,7 @@ public class BD {
     }
     public List<String> getTituloLibros(String libro) throws SQLException{
         List<String> libros = new ArrayList<String>();
-        String sql = "select Titulo from titulos where Titulo like '"+libro+"%'";
+        String sql = "select distinct(Titulo) from titulos where Titulo like '"+libro+"%'";
         Statement st = conn.createStatement();
         rs = st.executeQuery(sql);
         while(rs.next()){
@@ -39,5 +39,21 @@ public class BD {
         }
         return libros;
         
+    }
+    public List<Libro> getLibros(String libro) throws SQLException{
+         List<Libro> libros = new ArrayList<Libro>();
+        String sql = "SELECT titulos.ISBN,titulos.Titulo,autor.Nombre,titulos.Descripcion,editorial.NameEditorial FROM `titulos` INNER JOIN autor INNER JOIN editorial on titulos.IDautor = autor.IDAutor and titulos.IDeditorial = editorial.IDEditorial where titulos.Titulo like '"+libro+"'";
+        Statement st = conn.createStatement();
+        rs = st.executeQuery(sql);
+        while(rs.next()){
+            String isbn = rs.getString(1);
+            String titulo = rs.getString(2);
+            String autor = rs.getString(3);
+            String descripcion = rs.getString(4);
+            String editorial = rs.getString(5);
+            Libro libro1 = new Libro(titulo, isbn, descripcion, editorial, autor);
+            libros.add(libro1);
+        }
+        return libros;
     }
 }  
