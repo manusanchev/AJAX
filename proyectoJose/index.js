@@ -2,7 +2,7 @@ window.onload = inicializar;
 
 
 function inicializar(){
-     var letras = document.getElementById("letras");
+      letras = document.getElementById("letras");
     
      cancion = [];
      colores = ["green","red","blue","black","grey"];
