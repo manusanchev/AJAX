@@ -91,27 +91,24 @@
             peticion.onreadystatechange = function () {
 
                 if (this.status == 200 && this.readyState == 4) {
-                    var respuesta = this.responseXML;
-                   
-
-                    var libro = respuesta.getElementsByTagName("libro");
-                    for (const datos of libro) {
-                        var isbn = datos.getElementsByTagName("isbn")[0].firstChild.nodeValue;
-                        var autor = datos.getElementsByTagName("autor")[0].firstChild.nodeValue;
-                        var titulo = datos.getElementsByTagName("titulo")[0].firstChild.nodeValue;
-                        var descripcion = datos.getElementsByTagName("descripcion")[0].firstChild.nodeValue;
-                        var editorial = datos.getElementsByTagName("editorial")[0].firstChild.nodeValue;
-                        divTable.innerHTML += "<table border='1'><tr><th>titulo</th><td>" + titulo +
-                            "</td></tr><tr><th>isbn</th><td>" + isbn + "</td></tr><tr><th>autor</th><td>" + autor +
-                            "</td></tr><tr><th>descripcion</th><td>" + descripcion +
-                            "</td></tr><tr><th>editorial</th><td>" + editorial + "</td></tr></table><br>";
+                    //var respuesta = this.responseXML;
+                    var respuesta = JSON.parse(this.responseText);
+                    console.log(respuesta);
+                    
+                  
+                    for (const datos of respuesta) {
+                     
+                        divTable.innerHTML += "<table border='1'><tr><th>titulo</th><td>" + datos.titulo +
+                            "</td></tr><tr><th>isbn</th><td>" + datos.isbn + "</td></tr><tr><th>autor</th><td>" + datos.autor +
+                            "</td></tr><tr><th>descripcion</th><td>" + datos.descripcion +
+                            "</td></tr><tr><th>editorial</th><td>" + datos.editorial + "</td></tr></table><br>";
 
 
                     }
 
                 }
             }
-            var query = creaQuery();
+            var query =creaQuery();
             peticion.open("POST", "obtenerDatos.jsp", true)
             peticion.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             peticion.send(query)
